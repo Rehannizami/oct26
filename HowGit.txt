@@ -1,0 +1,133 @@
+================================================================================
+                    HOWGIT.TXT - CROSS-PLATFORM GIT & C++ SETUP
+================================================================================
+Project:      oct26
+Local Path:   ~/workspace/oct26 (/home/nizami/workspace/oct26)
+Remote Host:  192.168.29.13 (Windows machine on local network)
+Protocols:    Git Daemon (git://192.168.29.13/oct26.git)
+              SSH (ssh://softn@192.168.29.13/C:/msys64/home/softn/git-repos/oct26.git)
+Date:         October 2026
+
+--------------------------------------------------------------------------------
+1. NETWORK CONNECTIVITY & DIAGNOSTICS
+--------------------------------------------------------------------------------
+A. Initial Network Issue & Resolution:
+   - Initial attempt targeted 172.28.109.170 on a mobile hotspot network.
+   - Hotspot client isolation (AP isolation) prevented inter-device communication.
+   - Both the Windows host and Linux machine were reconnected to the local Wi-Fi 
+     network ("Nizami Bhawan_5G", subnet 192.168.29.0/24).
+   - Windows Host IP was identified as: 192.168.29.13.
+
+B. Connectivity Verification:
+   1. ICMP Ping:
+      $ ping -c 3 192.168.29.13
+      (Note: Windows Firewall typically drops ICMP echo requests by default).
+
+   2. Git Daemon Protocol Verification:
+      Tested Git communication directly against port 9418:
+      $ git ls-remote git://192.168.29.13/oct26.git
+      Exit Code: 0 (Successful handshake with Git daemon).
+
+   3. SSH Protocol Check:
+      $ ssh -o ConnectTimeout=2 softn@192.168.29.13
+      (Used as an alternative if SSH service is enabled on Windows).
+
+--------------------------------------------------------------------------------
+2. REPOSITORY CLONING & INITIALIZATION
+--------------------------------------------------------------------------------
+A. Directory Setup:
+   Created the local workspace directory:
+   $ mkdir -p ~/workspace
+   $ cd ~/workspace
+
+B. Cloning the Bare Repository:
+   Cloned the remote bare repository hosted by the Windows Git daemon:
+   $ git clone git://192.168.29.13/oct26.git ~/workspace/oct26
+   Result:
+   - Git clones the repository and sets 'origin' to git://192.168.29.13/oct26.git.
+   - Since the bare repo was freshly created, Git notes:
+     "warning: You appear to have cloned an empty repository."
+
+C. Branch Configuration:
+   Set the local active branch to 'main':
+   $ cd ~/workspace/oct26
+   $ git checkout -b main   # or git branch -M main
+
+--------------------------------------------------------------------------------
+3. CROSS-PLATFORM C++ CONFIGURATION
+--------------------------------------------------------------------------------
+A. .gitignore Configuration:
+   A comprehensive `.gitignore` was created to avoid OS-specific file conflicts 
+   between Linux and Windows builds:
+   - Build directories: build/, build-*/, build-ucrt64/, build-clang64/, 
+     build-mingw64/, cmake-build-*/, bin/, lib/, out/
+   - Linux object & binary files: *.o, *.so, *.out, *.a
+   - Windows object & binary files: *.obj, *.exe, *.dll, *.lib, *.pdb, *.ilk
+   - CMake generated files: CMakeCache.txt, CMakeFiles/, cmake_install.cmake, etc.
+   - IDE & editor files: .vscode/, .idea/, .vs/, *.user, *.swp
+   - System metadata: .DS_Store, Thumbs.db, desktop.ini
+
+B. Out-of-Source CMakeLists.txt:
+   Created a standard `CMakeLists.txt` (C++17) that enforces out-of-source builds:
+   - Includes a guard preventing in-source builds:
+     if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+       message(FATAL_ERROR "In-source builds are forbidden...")
+     endif()
+   - Configures compiler flags (/W4 for MSVC, -Wall -Wextra -Wpedantic for GCC/Clang).
+   - Generates executable target `oct26` from `main.cpp`.
+
+C. Baseline C++ Starter Code (main.cpp):
+   - Created `main.cpp` with preprocessor logic detecting:
+     * Operating System (_WIN32 / _WIN64 vs __linux__ vs __APPLE__)
+     * Compiler (__GNUC__ vs __clang__ vs _MSC_VER)
+     * C++ Standard (__cplusplus)
+   - Verified local build and execution on Linux:
+     $ cmake -B build
+     $ cmake --build build
+     $ ./build/oct26
+
+--------------------------------------------------------------------------------
+4. GIT COMMIT AND REMOTE SYNCHRONIZATION
+--------------------------------------------------------------------------------
+A. Git Identity Configuration:
+   Configured local user identity:
+   $ git config user.name "nizami"
+   $ git config user.email "nizami@local"
+
+B. Staging and Committing Baseline Files:
+   $ git add .gitignore CMakeLists.txt main.cpp HowGit.txt
+   $ git commit -m "Initial baseline: cross-platform C++ template and Git setup"
+
+C. Remote Push:
+   $ git branch -M main
+   $ git push -u origin main
+
+   Note on Git Daemon vs SSH:
+   - Git Daemon (git://) is unauthenticated and runs on port 9418.
+     By default, Git daemon disables pushes ('receive-pack') for security.
+     To allow pushing over git://, the bare repository on Windows must enable it:
+       git --git-dir=C:/msys64/home/softn/git-repos/oct26.git config daemon.receivepack true
+   - Alternatively, pushing via SSH provides secure authenticated access:
+       git remote set-url origin ssh://softn@192.168.29.13/C:/msys64/home/softn/git-repos/oct26.git
+       git push -u origin main
+
+--------------------------------------------------------------------------------
+5. HOW TO BUILD AND RUN THE PROJECT
+--------------------------------------------------------------------------------
+On Linux:
+   $ cd ~/workspace/oct26
+   $ cmake -B build -S .
+   $ cmake --build build
+   $ ./build/oct26
+
+On Windows (MSYS2 UCRT64 / MinGW64):
+   $ cd /c/msys64/home/softn/workspace/oct26   # or relevant path
+   $ cmake -B build-ucrt64 -G "Ninja"
+   $ cmake --build build-ucrt64
+   $ ./build-ucrt64/oct26.exe
+
+On Windows (Visual Studio / MSVC Developer Prompt):
+   $ cmake -B build-vs
+   $ cmake --build build-vs --config Release
+   $ .\build-vs\Release\oct26.exe
+================================================================================

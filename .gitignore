@@ -1,0 +1,85 @@
+# ====================================================================
+# Cross-Platform C/C++ .gitignore (Linux, Windows, MSYS2, MinGW, MSVC)
+# ====================================================================
+
+# Prerequisites / Dependency files
+*.d
+*.i
+
+# Compiled Object files
+*.o
+*.obj
+*.ko
+*.lo
+*.la
+*.al
+*.gch
+*.pch
+
+# Compiled Libraries
+*.lai
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Build directories & Output directories (Linux & Windows)
+build/
+build-*/
+build-linux/
+build-windows/
+build-ucrt64/
+build-clang64/
+build-mingw64/
+cmake-build-*/
+bin/
+lib/
+out/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+Makefile
+
+# Debugging and Profiling artifacts
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.ilk
+*.exp
+core
+core.*
+*.gcda
+*.gcno
+*.gcov
+
+# IDEs, Editors & Tooling
+.vscode/
+.idea/
+.vs/
+*.swp
+*.swo
+*~
+*.user
+*.suo
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
