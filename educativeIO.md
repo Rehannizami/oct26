@@ -82,3 +82,81 @@ $$\log_b k = \frac{\log_a k}{\log_a b}$$
 For example, we can use these two manipulations to compare the natural and binary logarithms:
 
 $$\ln k = \frac{\log k}{\log e} = \frac{\log k}{(\ln e) / (\ln 2)} = (\ln 2)(\log k) \approx 0.693147 \log k$$
+
+## Factorials
+
+In one or two places in this course, the **factorial function** is used. For a non-negative integer $n$, the notation $n!$ (pronounced "$n$ factorial") is defined to mean
+
+$$n! = 1 \cdot 2 \cdot 3 \cdot \cdots \cdot n$$
+
+Factorials appear because $n!$ counts the number of distinct permutations, i.e., orderings, of $n$ distinct elements. For the special case $n = 0$, $0!$ is defined as $1$.
+
+The quantity $n!$ can be approximated using **Stirling’s Approximation**:
+
+$$n! = \sqrt{2\pi n} \left(\frac {n}{e}\right)^n e^{\alpha(n)}$$
+
+where
+
+$$\frac{1}{12n + 1} < \alpha (n) < \frac{1}{12n}$$
+
+Stirling’s Approximation also approximates $\ln(n!)$:
+
+$$\ln (n!) = n \ln n - n + \frac{1}{2} \ln (2\pi n) + \alpha(n)$$
+
+> **Note:** In fact, Stirling’s Approximation is most easily proven by approximating $\ln (n!) = \ln 1 + \ln 2 + \cdots + \ln n$ by the integral $\int_{1}^{n} \ln n\ dn = n \ln n - n + 1$.
+
+Related to the factorial function are the **binomial coefficients**. For a non-negative integer $n$ and an integer $k \in \{0,...,n\}$, the notation $\binom{n}{k}$ denotes:
+
+$$\binom{n}{k} = \frac {n!} {k!(n-k)!}$$
+
+The binomial coefficient $\binom{n}{k}$ (pronounced "$n$ factorial $k$") counts the number of subsets of an $n$ element set that have size $k$, i.e., the number of ways of choosing $k$ distinct integers from the set $\{1,...,n\}$.
+
+## Asymptotic notation
+
+When we talk about the running time of an operation, we are referring to the number of computer instructions performed during the operation. Even for simple code, this quantity can be difficult to compute exactly. Therefore, instead of analyzing running times exactly, we’ll use the so-called big-Oh notation: For a function $f(n)$, $O(f(n))$ denotes a set of functions,
+
+$$O(f(n)) = \begin{cases} g(n) : \text{there exists } c > 0 \text{ and } n_0 \text{ such that}\\ g(n) \le c \cdot f(n) \text{ for all } n \ge n_0 \end{cases}$$
+
+Thinking graphically, this set consists of the functions $g(n)$ where $c \cdot f(n)$ starts to dominate $g(n)$ when $n$ is sufficiently large.
+
+We generally use asymptotic notation to simplify functions. For example, in place of $5n \log n + 8n - 200$ we can write $O(n \log n)$. This is proven as follows:
+
+$$5n \log n + 8n - 200 \le 5n \log n + 8n$$
+
+$$\le 5n \log n + 8n \log n \quad \text{for } n \ge 2 \text{ (so that } \log n \ge 1)$$
+
+$$\le 13n \log n$$
+
+This demonstrates that the function $f(n) = 5n \log n + 8n - 200$ is in the set $O(n \log n)$ using the constants $c = 13$ and $n_0 = 2$.
+
+A number of useful shortcuts can be applied when using asymptotic notation. First:
+
+$$O(n^{c_1}) \subset O(n^{c_2})$$
+
+for any $c_1 < c_2$. Second: For any constants $a, b, c > 0$,
+
+$$O(a) \subset O(\log n) \subset O(n^b) \subset O(c^n)$$
+
+These inclusion relations can be multiplied by any positive value, and they still hold. For example, multiplying by $n$ yields:
+
+$$O(n) \subset O(n \log n) \subset O(n^{1+b}) \subset O(nc^n)$$
+
+Continuing in a long and distinguished tradition, we’ll use $f_1(n) = O(f(n))$ and $f_1(n) \in O(f(n))$ synonymously. We will also make statements like “the running time of this operation is $O(f(n))$” when this statement should be “the running time of this operation is a member of $O(f(n))$.”
+
+A particularly strange example of this occurs when we write statements like:
+
+$$T(n) = 2 \log n + O(1)$$
+
+Again, this would be more correctly written as:
+
+$$T(n) \le 2 \log n + [\text{some member of } O(1)]$$
+
+The expression $O(1)$ also brings up another issue. Since there is no variable in this expression, it may not be clear which variable is getting arbitrarily large. Without context, there is no way to tell. In the example above, since the only variable in the rest of the equation is $n$, we can assume that this should be read as $T(n) = 2 \log n + O(f(n))$, where $f(n) = 1$.
+
+Big-Oh notation is not new or unique to computer science. It was used by the number theorist Paul Bachmann as early as 1894, and is immensely useful for describing the running times of computer algorithms. Consider the following piece of code:
+
+```java
+void snippet() {
+  for (int i = 0; i < n; i++)
+    a[i] = i; 
+}
