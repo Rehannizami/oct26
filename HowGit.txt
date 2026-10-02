@@ -3,14 +3,17 @@
 ================================================================================
 Project:      oct26
 Local Path:   ~/workspace/oct26 (/home/nizami/workspace/oct26)
-Remote Host:  192.168.29.13 (Windows machine on local network)
-Protocols:    Git Daemon (git://192.168.29.13/oct26.git)
-              SSH (ssh://softn@192.168.29.13/C:/msys64/home/softn/git-repos/oct26.git)
+Remote Cloud: https://github.com/Rehannizami/oct26.git
+Branch:       main
+Documentation: See HowtoGit.md for the active GitHub cloud workflow guide.
 Date:         October 2026
 
 --------------------------------------------------------------------------------
-1. NETWORK CONNECTIVITY & DIAGNOSTICS
+1. NETWORK & CLOUD ARCHITECTURE
 --------------------------------------------------------------------------------
+The project has been migrated to GitHub Cloud (https://github.com/Rehannizami/oct26.git).
+Both the Linux and Windows (MSYS2 UCRT64) machines now sync via GitHub.
+(Legacy note: Previously hosted locally over git daemon on 192.168.29.13).
 A. Initial Network Issue & Resolution:
    - Initial attempt targeted 172.28.109.170 on a mobile hotspot network.
    - Hotspot client isolation (AP isolation) prevented inter-device communication.
