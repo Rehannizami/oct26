@@ -11,42 +11,41 @@ by utilizing your ability to explore.
 
 ## Number of operations
 
-Imagine an application with a moderately-sized data set, say of one million (106),(106), items. 
-In most applications, it is reasonable to assume that the application will want to look up each item at least once. 
-This means we can expect to do at least one million (106106) searches in this data. 
-If each of these 106106 searches inspects each of the 106106 items, this gives a total of 
-106×106=1012106×106=1012 (one thousand billion) inspections.
+Imagine an application with a moderately-sized data set, say of one million ($10^6$) items. In most applications, it is reasonable to assume that the application will want to look up each item at least once. This means we can expect to do at least one million ($10^6$) searches in this data. If each of these $10^6$ searches inspects each of the $10^6$ items, this gives a total of:
+
+$$10^6 \times 10^6 = 10^{12} \text{ (one thousand billion) inspections}$$
 
 ## Processor speeds
 
-At the time of writing, even a very fast desktop computer can not do more than one billion (109109) operations per second. 
-This means that this application will take at least 1012/109=10001012/109=1000 seconds, or roughly 1616 minutes and 4040 seconds.Sixteen minutes is an eon in computer time, but a person might be willing to put up with it 
-(if they were headed out for a coffee break).
-    > Note: Computer speeds are at most a few gigahertz (billions of cycles per second), and each operation typically takes a few cycles.
+At the time of writing, even a very fast desktop computer cannot do more than one billion ($10^9$) operations per second. This means that this application will take at least:
+
+$$\frac{10^{12}}{10^9} = 1000 \text{ seconds}$$
+
+or roughly $16$ minutes and $40$ seconds. Sixteen minutes is an eon in computer time, but a person might be willing to put up with it (if they were headed out for a coffee break).
+
+> **Note:** Computer speeds are at most a few gigahertz (billions of cycles per second), and each operation typically takes a few cycles.
 
 ## Bigger data sets
 
-Now consider a company like Google, that indexes over 8.58.5 billion web pages. 
-By our calculations, doing any query over this data would take at least 8.58.5 seconds. 
-We already know that this isn’t the case; web searches complete in much less than 8.58.5 seconds, 
-and they do much more complicated queries than just asking if a particular page is in their list of indexed pages.
-    At the time of writing, Google receives approximately 4,5004,500 queries per second, meaning that they would require at least 4,500×8.5=38,2504,500×8.5=38,250 very fast servers just to keep up.
+Now consider a company like Google, that indexes over $8.5$ billion web pages. By our calculations, doing any query over this data would take at least $8.5$ seconds. We already know that this isn’t the case; web searches complete in much less than $8.5$ seconds, and they do much more complicated queries than just asking if a particular page is in their list of indexed pages.
+
+At the time of writing, Google receives approximately $4,500$ queries per second, meaning that they would require at least:
+
+$$4,500 \times 8.5 = 38,250 \text{ very fast servers just to keep up}$$
 
 ## The solution
-These examples tell us that the obvious implementations of data structures do not scale well when the number of items, nn, 
-in the data structure and the number of operations, mm, performed on the data structure are both large. 
-In these cases, the time (measured in, say, machine instructions) is roughly n×mn×m.
 
-The solution, of course, is to carefully organize data within the data structure so that not every operation 
-requires every data item to be inspected. Although it sounds impossible at first, 
-there are data structures where a search requires looking at only two items on average, 
-independent of the number of items stored in the data structure. In our billion instruction per second computer, it takes only 0.
-0000000020.000000002 seconds to search in a data structure containing a billion items 
-(or a trillion, or a quadrillion, or even a quintillion items).
-    There are such data structures that keep the items in sorted order, where the number of items inspected 
-during an operation grows very slowly as a function of the number of items in the data structure. 
-For example, we can maintain a sorted set of one billion items while inspecting at most 6060 items during any operation. 
-In our billion instruction per second computer, these operations take 0.000000060.00000006 seconds each.
+These examples tell us that the obvious implementations of data structures do not scale well when the number of items, $n$, in the data structure and the number of operations, $m$, performed on the data structure are both large. In these cases, the time (measured in, say, machine instructions) is roughly $n \times m$.
+
+The solution, of course, is to carefully organize data within the data structure so that not every operation requires every data item to be inspected. Although it sounds impossible at first, there are data structures where a search requires looking at only two items on average, independent of the number of items stored in the data structure. In our billion instruction per second computer, it takes only:
+
+$$0.000000002 \text{ seconds}$$
+
+to search in a data structure containing a billion items (or a trillion, or a quadrillion, or even a quintillion items).
+
+There are such data structures that keep the items in sorted order, where the number of items inspected during an operation grows very slowly as a function of the number of items in the data structure. For example, we can maintain a sorted set of one billion items while inspecting at most $60$ items during any operation. In our billion instruction per second computer, these operations take:
+
+$$0.00000006 \text{ seconds each}$$
 
 # Exponentials and Logarithms
 
