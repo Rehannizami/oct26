@@ -160,3 +160,136 @@ void snippet() {
   for (int i = 0; i < n; i++)
     a[i] = i; 
 }
+
+```
+
+One execution of this method involves:
+- $1$ assignment (`int i = 0`)
+- $n+1$ comparisons (`i < n`)
+- $n$ increments (`i++`)
+- $n$ array offset calculations (`a[i]`)
+- $n$ indirect assignments (`a[i] = i`)
+
+So we could write this running time as:
+
+$$T(n) = a + b(n+1) + cn + dn + en$$
+
+where $a, b, c, d,$ and $e$ are machine-dependent constants. Using big-Oh notation, this simplifies cleanly to:
+
+$$T(n) = O(n)$$
+
+# Approach and Coverage
+
+Explore the methodology and coverage of key data structures in C++, focusing on simplified code samples and performance metrics. Understand the design choices for interfaces and efficiency to build foundational knowledge for implementing and analyzing data structures in C++.
+
+## Methodology
+
+The code samples in this course are written in the C++ programming language. However, to make the course accessible to readers not familiar with all of C++ constructs and keywords, the code samples have been simplified. For example, a reader won’t find any of the keywords `public`, `protected`, `private`, or `static`. A reader also won’t find much discussion about class hierarchies. Which interfaces a particular class implements or which class it extends, if relevant to the discussion, should be clear from the accompanying text.
+
+These conventions should make the code samples understandable by anyone with a background in any of the languages from the ALGOL tradition, including B, C, C++, C#, Objective-C, D, Java, JavaScript, and so on. Readers who want the full details of all implementations are encouraged to look at the C++ source code that accompanies this course.
+
+This course mixes mathematical analyses of running times with C++ source code for the algorithms being analyzed. This means that some equations contain variables also found in the source code. These variables are typeset consistently, both within the source code and within equations. The most common such variable is the variable $n$ that, without exception, always refers to the number of items currently stored in the data structure.
+
+## List of Data Structures
+
+The tables below summarize the performance of data structures in this course that implement each of the interfaces, `List`, `USet`, and `SSet`, described previously.
+
+### Summary of List and USet Implementations
+
+#### List Implementations
+
+| Data Structure | `get(i)` / `set(i, x)` | `add(i, x)` / `remove(i)` |
+| :--- | :--- | :--- |
+| `ArrayStack` | $O(1)$ | $O(1 + n - i)^A$ |
+| `ArrayDeque` | $O(1)$ | $O(1 + \min\{i, n - i\})^A$ |
+| `DualArrayDeque` | $O(1)$ | $O(1 + \min\{i, n - i\})^A$ |
+| `RootishArrayStack` | $O(1)$ | $O(1 + n - i)^A$ |
+| `DLList` | $O(1 + \min\{i, n - i\})$ | $O(1 + \min\{i, n - i\})$ |
+| `SEList` | $O(1 + \min\{i, n - i\} / b)$ | $O(b + \min\{i, n - i\} / b)^A$ |
+| `SkiplistList` | $O(\log n)^E$ | $O(\log n)^E$ |
+
+#### USet Implementations
+
+| Data Structure | `find(x)` | `add(x)` / `remove(x)` |
+| :--- | :--- | :--- |
+| `ChainedHashTable` | $O(1)^E$ | $O(1)^{A, E}$ |
+| `LinearHashTable` | $O(1)^E$ | $O(1)^{A, E}$ |
+
+- $^A$ Denotes an **amortized** running time.
+- $^E$ Denotes an **expected** running time.
+
+---
+
+### Summary of SSet and Priority Queue Implementations
+
+#### SSet Implementations
+
+| Data Structure | `find(x)` | `add(x)` / `remove(x)` |
+| :--- | :--- | :--- |
+| `SkiplistSSet` | $O(\log n)^E$ | $O(\log n)^E$ |
+| `Treap` | $O(\log n)^E$ | $O(\log n)^E$ |
+| `ScapegoatTree` | $O(\log n)$ | $O(\log n)^A$ |
+| `RedBlackTree` | $O(\log n)$ | $O(\log n)$ |
+| `BinaryTrie`$^I$ | $O(w)$ | $O(w)$ |
+| `XFastTrie`$^I$ | $O(\log w)^{A, E}$ | $O(w)^{A, E}$ |
+| `YFastTrie`$^I$ | $O(\log w)^{A, E}$ | $O(\log w)^{A, E}$ |
+| `BTree` | $O(\log n)$ | $O(B + \log n)^A$ |
+| `BTree`$^X$ | $O(\log_B n)$ | $O(\log_B n)$ |
+
+#### (Priority) Queue Implementations
+
+| Data Structure | `findMin()` | `add(x)` / `remove()` |
+| :--- | :--- | :--- |
+| `BinaryHeap` | $O(1)$ | $O(\log n)^A$ |
+| `MeldableHeap` | $O(1)$ | $O(\log n)^E$ |
+
+- $^I$ This structure can only store $w$-bit integer data.
+- $^X$ This denotes the running time in the external-memory model.
+
+---
+
+## Module Relationships
+
+The following illustration shows the dependencies between various modules in this course. A solid arrow shows a strong dependency of a module on another. A dashed arrow indicates only a weak dependency, in which only a small part of the module depends on another module or only the main results of the other module.
+
+```mermaid
+flowchart TD
+    intro["1. Introduction"]
+    arr["2. Array-based lists"]
+    ll["3. Linked lists"]
+    ll_se["3.3 Space-efficient linked lists"]
+    skip["4. Skiplists"]
+    hash["5. Hash tables"]
+    bt["6. Binary trees"]
+    rbst["7. Random binary search trees"]
+    scape["8. Scapegoat trees"]
+    rb["9. Red-black trees"]
+    heaps["10. Heaps"]
+    sort["11. Sorting algorithms"]
+    qsort["11.1.2 Quicksort"]
+    hsort["11.1.3 Heap-sort"]
+    graphs["12. Graphs"]
+    ds_int["13. Data structures for integers"]
+    ext_mem["14. External-memory searching"]
+
+    intro --> arr
+    intro --> ll
+    intro --> bt
+    intro --> sort
+
+    arr -.-> hash
+    ll --> ll_se
+    ll_se --> skip
+
+    bt --> rbst
+    bt --> scape
+    bt --> rb
+    bt --> heaps
+    bt --> ext_mem
+    bt -.-> graphs
+    bt -.-> ds_int
+    hash -.-> ds_int
+
+    rbst --> qsort
+    heaps --> hsort
+```
