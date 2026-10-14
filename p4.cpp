@@ -216,12 +216,13 @@ void printClassRoster(const std::vector<std::string> &names,
     // Add a student to the gradebook
     void addStudent(const std::string &name, double score) {
       // TODO: Push a new Student into `roster`
+        roster.push_back({name,score});
     }
 
     // Return total students registered
     std::size_t size() const {
       // TODO: Return roster size
-      return 0;
+      return roster.size();
     }
 
     // Return average score across all students
@@ -229,7 +230,11 @@ void printClassRoster(const std::vector<std::string> &names,
       if (roster.empty())
         return 0.0;
       // TODO: Sum up all scores in roster and return the average
-      return 0.0;
+      double sum= 0.0;
+      for(const Student& s : roster) {
+        sum+= s.score;
+      }
+      return sum/roster.size();
     }
 
     // Return the Student with the highest score
@@ -237,13 +242,24 @@ void printClassRoster(const std::vector<std::string> &names,
       if (roster.empty())
         return {"Nobody", 0.0};
       // TODO: Find and return the student with the maximum score
-      return roster[0];
+      int top = 0;
+      for(int i = 0 ; i < roster.size() ; i++) {
+        if(roster.at(i).score > roster.at(top).score) {
+            top = i;
+        }
+      }
+        return roster.at(top);
     }
-
     // Return count of students who passed (>= passThreshold)
     int countPassed(double passThreshold = 50.0) const {
       // TODO: Count and return how many students passed
-      return 0;
+      int count = 0;
+      for (int i = 0 ; i < roster.size() ; i++) {
+        if(roster.at(i).score>= passThreshold) {
+            count++;
+        }
+      }
+        return count;
     }
 
     // Display formatted summary card
