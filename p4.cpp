@@ -311,7 +311,18 @@ void printClassRoster(const std::vector<std::string> &names,
 
   void displayRankedLeaderboard(std::vector<Student> students) {
     // TODO: Sort `students` by score descending (highest to lowest)
+      std::sort(
+        students.begin(),
+        students.end(),
+        [](const Student& a , const Student& b) {
+            return a.score > b.score;
+        }
+    );
     // TODO: Print the ranked leaderboard (Rank #1, Rank #2, etc.)
+    for (int i = 0 ; i < students.size() ; i++) {
+        std:: cout << "Rank #" << i+1 << ": " << students.at(i).name << "(" << student.at(i).score << ")";
+        std:: cout << std:: endl;
+    }
   }
 
   void problem5() {
