@@ -4,7 +4,18 @@
 #include <numeric>
 #include <string>
 #include <vector>
+#include <thread>
+#include <chrono>
 
+void typeText(const std::string& text, int delayMs) {
+    for (char ch : text) {
+        std::cout << ch << std::flush;
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(delayMs)
+        );
+    }
+}
 /*
  ============================================================================
   oct26 / p4.cpp
@@ -57,8 +68,8 @@ double getLowestScore(const std::vector<double> &scores) {
 }
 
 void problem1() {
-  std::cout << "\n=================== PROBLEM 1: Vector Statistics "
-               "==================="
+  std::cout << "\033[35m\n=================== PROBLEM 1: Vector Statistics \033[0m"
+               "\033[35m===================\033[0m"
             << std::endl;
   std::vector<double> scores = {78.5, 92.0, 45.5, 88.0, 61.5, 39.0, 95.5};
 
@@ -118,8 +129,8 @@ std::vector<double> getFailingScores(const std::vector<double> &scores,
 }
 
 void problem2() {
-  std::cout << "\n=================== PROBLEM 2: Filtering & Counting "
-               "==================="
+  std::cout << "\033[35m\n=================== PROBLEM 2: Filtering & Counting \033[0m"
+               "\033[35m===================\033[0m"
             << std::endl;
   std::vector<double> scores = {45.0, 82.5, 33.0, 91.0, 49.5, 76.0, 50.0};
 
@@ -177,8 +188,8 @@ void printClassRoster(const std::vector<std::string> &names,
 }
 
   void problem3() {
-    std::cout << "\n=================== PROBLEM 3: Parallel Vectors "
-                 "==================="
+    std::cout << "\033[35m\n=================== PROBLEM 3: Parallel Vectors \033[0m"
+                 "\033[35m===================\033[0m"
               << std::endl;
     std::vector<std::string> names = {"Ethan Parker", "Olivia Mitchell",
                                       "Mason Brooks", "Sophia Anderson",
@@ -282,7 +293,7 @@ void printClassRoster(const std::vector<std::string> &names,
 
   void problem4() {
     std::cout
-        << "\n=================== PROBLEM 4: OOP Gradebook ==================="
+        << "\033[35m\n=================== PROBLEM 4: OOP Gradebook ===================\033[0m"
         << std::endl;
     Gradebook gb;
     gb.addStudent("Ethan Parker", 84.5);
@@ -320,14 +331,14 @@ void printClassRoster(const std::vector<std::string> &names,
     );
     // TODO: Print the ranked leaderboard (Rank #1, Rank #2, etc.)
     for (int i = 0 ; i < students.size() ; i++) {
-        std:: cout << "Rank #" << i+1 << ": " << students.at(i).name << "(" << student.at(i).score << ")";
+        std:: cout << "Rank #" << i+1 << ": " << students.at(i).name << "(" << students.at(i).score << ")";
         std:: cout << std:: endl;
     }
   }
 
   void problem5() {
-    std::cout << "\n=================== PROBLEM 5: Leaderboard Ranking "
-                 "==================="
+    std::cout << "\033[35m\n=================== PROBLEM 5: Leaderboard Ranking \033[0m"
+                 "\033[35m===================\033[0m"
               << std::endl;
     std::vector<Student> students = {{"Ethan Parker", 84.5},
                                      {"Olivia Mitchell", 96.0},
@@ -339,9 +350,24 @@ void printClassRoster(const std::vector<std::string> &names,
   }
 
   // ============================================================================
-  // MAIN ENTRY POINT
+  // MAIN ENTRY POINT`
   // ============================================================================
   int main() {
+
+    typeText("\033[36m Initializing system...\n\033[0m", 60);
+    typeText("\033[32mAccess granted.\n\033[0m", 80);
+     const char frames[] = {'|', '/', '-', '\\'};
+
+    for (int i = 0; i < 40; ++i) {
+        std::cout << "\rLoading " << frames[i % 4]
+                  << std::flush;
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(100)
+        );
+    }
+
+    std::cout << "\033[35m\r Welcome   \n\033[0m";
     std::cout << "================================================="
               << std::endl;
     std::cout << "  oct26/p4.cpp: Vector & Gradebook Masterclass   "
