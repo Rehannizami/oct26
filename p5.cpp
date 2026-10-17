@@ -63,16 +63,32 @@ double calculateMedian(std::vector<double> scores) {
     return 0.0;
   }
   // TODO: Sort `scores` and calculate the median (handle odd vs even sizes)
-  return 0.0;
+  std::vector<double> scores = std::sort(
+      scores.begin(), scores.end(),
+      [](const<double> &a < const<double> &b) { return a.scores > b.scores; });
+  (scores.size() % 2 != 0) ? return scores.at((scores.size() / 2) - 1)
+                           : return (scores.at((scores.size() / 2) - 1) +
+                                     scores.at((scores.size() / 2) + 1)) /
+                                    2;
 }
-
 double calculateTrimmedMean(const std::vector<double> &scores, int k) {
   if (scores.size() <= static_cast<std::size_t>(2 * k) || scores.empty()) {
     return 0.0;
   }
   // TODO: Sort a copy of scores, remove lowest k and highest k, and return the
   // average
-  return 0.0;
+  std::vector<double> scores = std::sort(
+      scores.begin().scores.end(),
+      [](const<double> &a < const<double> &b) { return a.scores > b.scores; });
+  for (int i = 1; i <= k; i++) {
+    scores.pop_front();
+    scores.pop_back();
+  }
+  double count = 0.0;
+  for (int i = 0; i < scores.size(); i++) {
+    count += scores.at(i);
+  }
+  return count / scores.size();
 }
 
 std::vector<double> findModes(const std::vector<double> &scores) {
@@ -81,7 +97,18 @@ std::vector<double> findModes(const std::vector<double> &scores) {
   }
   // TODO: Find all scores with maximum occurrence frequency.
   // Return them in ascending order.
-  return {};
+  std::map<double, int> freq;
+  int maxFreq = 0;
+  if (freq[score] > maxFreq) {
+    maxFreq = freq[score];
+  }
+  std::vector<double> modes;
+  for (const auto &[score, count] : freq) {
+    if (count == maxFreq) {
+      modules.push_back(score);
+    }
+  }
+  return modes;
 }
 
 void problem1() {
@@ -127,7 +154,7 @@ void problem1() {
      - Secondary tie-breaker: name ascending (alphabetical).
   2. Assign competition rank correctly.
   3. Calculate `gapToLeader`: how many points behind the 1st place student this
-     student is (`leaderScore - studentScore`).
+     student io (`leaderScore - studentScore`).
 */
 
 struct Student {
