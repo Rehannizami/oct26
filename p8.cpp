@@ -8,7 +8,6 @@ public:
   Student(int age) {
     this->age = age; // data member = parameter
   }
-
   void show() { cout << "Age: " << age << endl; }
 };
 
